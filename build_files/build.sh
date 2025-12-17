@@ -47,7 +47,7 @@ if ! rpm -q dnf5 >/dev/null; then
     rpm-ostree install dnf5 dnf5-plugins
 fi
 
-dnf5 install @core @container-management @hardware-support
+dnf5 -y install @core @container-management @hardware-support
 systemctl enable install-zena.service
 systemctl mask systemd-remount-fs
 
