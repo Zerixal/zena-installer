@@ -9,6 +9,8 @@ RUN --mount=type=bind,from=ctx,source=/,target=/ctx \
     --mount=type=tmpfs,dst=/tmp \
     /ctx/build.sh
 
-RUN sudo podman pull ghcr.io/jianzcar/zena:stable
+RUN skopeo copy \
+    docker://ghcr.io/jianzcar/zena:stable \
+    dir:/etc/zena
 
 RUN bootc container lint
