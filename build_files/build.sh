@@ -41,4 +41,5 @@ WantedBy=multi-user.target
 EOF
 
 systemctl enable install-zena.service
+systemctl mask systemd-remount-fs
 sudo sed -i -e 's/^SELINUX=.*/SELINUX=disabled/' /etc/selinux/config
