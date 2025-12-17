@@ -19,8 +19,8 @@ chmod +x /usr/libexec/install-zena.sh
 cat << 'EOF' > /etc/systemd/system/install-zena.service
 [Unit]
 Description=Zena installer
-After=getty@tty1.service
-Wants=getty@tty1.service
+After=local-fs.target sysinit.target
+Requires=local-fs.target
 RequiresMountsFor=/etc/zena
 
 [Service]
@@ -36,7 +36,7 @@ RemainAfterExit=yes
 WantedBy=multi-user.target
 EOF
 
-cat << 'EOF' > /usr/lib/systemd/system-preset/99-install-zena.preset
+cat << 'EOF' > /usr/lib/systemd/system-preset/02-install-zena.preset
 enable install-zena.service
 EOF
 
