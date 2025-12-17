@@ -2,6 +2,7 @@
 
 set -ouex pipefail
 
+mkdir -p /usr/local/bin
 cat << 'EOF' > /usr/local/bin/install-zena.sh
 #!/usr/bin/env bash
 set -euxo pipefail
@@ -22,7 +23,6 @@ echo "Image imported. Switching BootC to use the local image..."
 
 echo "BootC switch complete; the system will reboot into the new image."
 EOF
-
 chmod +x /usr/local/bin/install-zena.sh
 
 cat << 'EOF' > /etc/systemd/system/install-zena.service
