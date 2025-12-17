@@ -50,4 +50,7 @@ RemainAfterExit=yes
 WantedBy=multi-user.target
 EOF
 
+dnf -y groupinstall "Core" "Minimal Install" \
+    --setopt=install_weak_deps=False \
+    --nodocs
 systemctl enable install-zena.service
