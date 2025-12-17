@@ -43,6 +43,11 @@ cat << 'EOF' > /usr/lib/systemd/system-preset/02-install-zena.preset
 enable install-zena.service
 EOF
 
+if ! rpm -q dnf5 >/dev/null; then
+    rpm-ostree install dnf5 dnf5-plugins
+fi
+
+dnf5 install @core @container-management @hardware-support
 systemctl enable install-zena.service
 systemctl mask systemd-remount-fs
 sudo sed -i -e 's/^SELINUX=.*/SELINUX=disabled/' /etc/selinux/config
