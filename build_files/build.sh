@@ -2,7 +2,7 @@
 
 set -ouex pipefail
 
-cat << 'eof' > /usr/local/bin/install-zena.sh
+cat << 'EOF' > /usr/local/bin/install-zena.sh
 #!/usr/bin/env bash
 set -euxo pipefail
 
@@ -25,13 +25,14 @@ echo "Image imported. Switching BootC to use the local image..."
 /usr/bin/bootc switch --transport containers-storage "\${IMAGE_REF}" --apply
 
 echo "BootC switch complete; the system will reboot into the new image."
-eof
+EOF
 chmod +x /usr/local/bin/install-zena.sh
 
 cat << 'EOF' > /etc/systemd/system/install-zena.service
 [Unit]
 Description=BootC switch installer
-Before=getty@tty1.service
+After=multi-user.target default.target
+Wants=multi-user.target
 
 [Service]
 Type=oneshot
@@ -49,4 +50,4 @@ RemainAfterExit=yes
 WantedBy=multi-user.target
 EOF
 
-systemctl enable podman.socket install-zena.service
+systemctl enable install-zena.service
