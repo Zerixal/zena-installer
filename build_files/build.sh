@@ -21,8 +21,9 @@ chmod +x /usr/libexec/install-zena.sh
 cat << 'EOF' > /etc/systemd/system/install-zena.service
 [Unit]
 Description=BootC switch installer
-After=multi-user.target default.target
-Wants=multi-user.target
+Requires=local-fs.target
+After=local-fs.target containers-storage.service multi-user.target
+ConditionPathExists=/etc/zena
 
 [Service]
 Type=oneshot
