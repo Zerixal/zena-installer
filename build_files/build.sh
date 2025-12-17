@@ -4,23 +4,16 @@ set -ouex pipefail
 
 mkdir -p /usr/libexec/
 cat << 'EOF' > /usr/libexec/install-zena.sh
-#!/usr/bin/env bash
+#!/bin/bash
 set -euxo pipefail
-
 OCI_DIR="/etc/zena"
-
-IMAGE_REF="ghcr.io/jianzcar/zena:stable"
-
 echo "Importing OCI image from \${OCI_DIR} into local container storage..."
 skopeo copy \
     --preserve-digests \
-    "oci:\${OCI_DIR}:stable" \
-    "containers-storage:\${IMAGE_REF}"
-
+    "oci:/etc/zena:stable" \
+    "containers-storage:ghcr.io/jianzcar/zena:stable"
 echo "Image imported. Switching BootC to use the local image..."
-
-/usr/bin/bootc switch --transport containers-storage "\${IMAGE_REF}" --apply
-
+/usr/bin/bootc switch --transport containers-storage "ghcr.io/jianzcar/zena:stable" --apply
 echo "BootC switch complete; the system will reboot into the new image."
 EOF
 chmod +x /usr/libexec/install-zena.sh
@@ -48,3 +41,4 @@ WantedBy=multi-user.target
 EOF
 
 systemctl enable install-zena.service
+sudo sed -i -e 's/^SELINUX=.*/SELINUX=disabled/' /etc/selinux/config
