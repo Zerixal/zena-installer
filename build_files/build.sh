@@ -30,7 +30,6 @@ After=local-fs.target sysinit.target
 
 [Service]
 Type=oneshot
-ExecStartPre=/usr/bin/systemctl stop getty@tty1.service
 ExecStart=/usr/libexec/install-zena.sh
 StandardOutput=journal+console
 StandardError=journal+console
