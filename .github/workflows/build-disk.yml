@@ -42,16 +42,22 @@ jobs:
         run: |
           ISO_FILE=$(find "${{ steps.build-iso.outputs.output-directory }}" -name "*.iso" | head -n1)
           echo "ISO_FILE=$ISO_FILE" >> $GITHUB_OUTPUT
+          
+      - name: Split ISO into 1GB parts
+        id: split_iso
+        run: |
+          mkdir -p ./iso_parts
+          split -b 1G "${{ steps.find_iso.outputs.ISO_FILE }}" ./iso_parts/install.part.
 
-      - name: Upload to GoFile
-        id: gofile
-        uses: ahnafnafee/action-upload-gofile@v2.1.0
-        with:
-          token: ${{ secrets.GOFILE_TOKEN }}
-          file: ${{ steps.find_iso.outputs.ISO_FILE }}
-      
-      - name: Show GoFile URL
-        run: echo "ISO download URL:${{ steps.gofile.outputs.url }}"
+      - name: Upload ISO parts to GoFile
+        id: upload_parts
+        run: |
+          for part in ./iso_parts/*; do
+            echo "Uploading $part ..."
+            URL=$(curl -s -F "file=@$part" https://upload.gofile.io/uploadfile | \
+                  python3 -c "import sys, json; print(json.load(sys.stdin)['data']['downloadPage'])")
+            echo "$URL"
+          done
 
       - name: Upload Artifact
         uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v5
