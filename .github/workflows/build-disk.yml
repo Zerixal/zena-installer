@@ -37,12 +37,18 @@ jobs:
           rootfs: btrfs
           additional-args: --use-librepo=True
 
+      - name: Find ISO to upload
+        id: find_iso
+        run: |
+          ISO_FILE=$(find "${{ steps.build-iso.outputs.output-directory }}" -name "*.iso" | head -n1)
+          echo "ISO_FILE=$ISO_FILE" >> $GITHUB_OUTPUT
+
       - name: Upload to GoFile
         id: gofile
         uses: ahnafnafee/action-upload-gofile@v2.1.0
         with:
           token: ${{ secrets.GOFILE_TOKEN }}
-          file: ${{ steps.build-iso.outputs.output-directory }}/**/*.iso
+          file: ${{ steps.find_iso.outputs.ISO_FILE }}
       
       - name: Show GoFile URL
         run: echo "ISO download URL:${{ steps.gofile.outputs.url }}"
