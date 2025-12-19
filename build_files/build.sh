@@ -10,11 +10,11 @@ echo "Importing OCI image into local container storage..."
 skopeo copy \
     --preserve-digests \
     "oci:/etc/zena:stable" \
-    "containers-storage:ghcr.io/jianzcar/zena:stable"
-echo "Installing Arch (zena) please wait..."
-/usr/bin/bootc switch --transport containers-storage "ghcr.io/jianzcar/zena:stable"
+    "containers-storage:ghcr.io/zerixal/zena:stable"
+echo "Installing Zena Arch please wait..."
+/usr/bin/bootc switch --transport containers-storage "ghcr.io/zerixal/zena:stable"
 echo "Cleaning up local image..."
-podman image rm "ghcr.io/jianzcar/zena:stable"
+podman image rm "ghcr.io/zerixal/zena:stable"
 echo "Rebooting"
 reboot
 EOF
@@ -56,4 +56,4 @@ systemctl mask systemd-remount-fs
 systemctl set-default graphical.target
 
 sed -i -e 's/^SELINUX=.*/SELINUX=disabled/' /etc/selinux/config
-sed -i -e 's|^PRETTY_NAME=.*|PRETTY_NAME="Arch (zena) Installer"|' /usr/lib/os-release
+sed -i -e 's|^PRETTY_NAME=.*|PRETTY_NAME="Zena Arch Installer"|' /usr/lib/os-release
