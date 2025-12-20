@@ -15,6 +15,7 @@ echo "Installing Zena Arch please wait..."
 /usr/bin/bootc switch --transport containers-storage "ghcr.io/zerixal/zena:latest"
 echo "Cleaning up local image..."
 podman image rm "ghcr.io/zerixal/zena:latest"
+touch /var/installed
 echo "Rebooting"
 reboot
 EOF
