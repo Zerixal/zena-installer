@@ -57,6 +57,5 @@ systemctl mask systemd-remount-fs
 systemctl set-default graphical.target
 
 sed -i -e 's/^SELINUX=.*/SELINUX=disabled/' /etc/selinux/config
-rm -rf /etc/selinux
 
 sed -i -e 's|^PRETTY_NAME=.*|PRETTY_NAME="Zena Arch Installer"|' /usr/lib/os-release
